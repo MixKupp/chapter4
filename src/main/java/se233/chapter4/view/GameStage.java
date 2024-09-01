@@ -14,6 +14,8 @@ public class GameStage extends Pane {
     public static final int GROUND = 300;
     private Image gameStageImage;
     private GameCharacter gameCharacter;
+
+    private GameCharacter nextGameCharacter;
     private Keys keys;
     public GameStage(){
         keys = new Keys();
@@ -21,11 +23,15 @@ public class GameStage extends Pane {
         ImageView backgroundImg = new ImageView(gameStageImage);
         backgroundImg.setFitWidth(WIDTH);
         backgroundImg.setFitHeight(HEIGHT);
-        gameCharacter = new GameCharacter(30, 30,0,0, KeyCode.A, KeyCode.D, KeyCode.W);
-        getChildren().addAll(backgroundImg,gameCharacter);
+        gameCharacter = new GameCharacter(30, 35,0,0, KeyCode.A, KeyCode.D, KeyCode.W,"assets/MarioSheet.png",16,32,32,64,0,0);
+        nextGameCharacter = new GameCharacter(30, 30,0,0, KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP,"assets/rockman.png",541,512,64,64,10,10);
+        getChildren().addAll(backgroundImg,gameCharacter,nextGameCharacter);
     }
     public GameCharacter getGameCharacter() {
         return gameCharacter;
+    }
+    public GameCharacter getNextGameCharacter() {
+        return nextGameCharacter;
     }
     public Keys getKeys() {
         return keys;

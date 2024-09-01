@@ -10,12 +10,12 @@ import se233.chapter4.view.GameStage;
 
 public class GameCharacter extends Pane {
     private static final Logger logger = LogManager.getLogger(GameCharacter.class);
-    public static final int CHARACTER_WIDTH = 32;
-    public static final int CHARACTER_HEIGHT = 64;
     private Image gameCharacterImage;
     private AnimatedSprite imageView;
+    private int CHARACTER_HEIGHT;
     private int x;
     private int y;
+    private int speed,gravity;
     private KeyCode leftKey;
     private KeyCode rightKey;
     private KeyCode upKey;
@@ -31,15 +31,18 @@ public class GameCharacter extends Pane {
     int xMaxVelocity = 7;
     int yMaxVelocity = 17;
 
-    public GameCharacter(int x, int y,int offsetX,int offsetY,KeyCode leftKey,KeyCode rightKey,KeyCode upKey) {
+    public GameCharacter(int x, int y,int offsetX,int offsetY,KeyCode leftKey,KeyCode rightKey,KeyCode upKey,String img,int width,int height,int cWidth,int cHeight,int speed,int gravity) {
         this.x = x;
         this.y = y;
+        this.speed = speed;
+        this.gravity = gravity;
+        this.CHARACTER_HEIGHT = cHeight;
         this.setTranslateX(x);
         this.setTranslateY(y);
-        this.gameCharacterImage = new Image(Launcher.class.getResourceAsStream("assets/MarioSheet.png"));
-        this.imageView = new AnimatedSprite(gameCharacterImage,4,4,1,offsetX,offsetY,16,32);
-        this.imageView.setFitHeight(CHARACTER_HEIGHT);
-        this.imageView.setFitWidth(CHARACTER_WIDTH);
+        this.gameCharacterImage = new Image(Launcher.class.getResourceAsStream(img));
+        this.imageView = new AnimatedSprite(gameCharacterImage,4,4,1,offsetX,offsetY,width,height);
+        this.imageView.setFitHeight(cHeight);
+        this.imageView.setFitWidth(cWidth);
         this.leftKey = leftKey;
         this.rightKey = rightKey;
         this.upKey = upKey;
@@ -59,28 +62,28 @@ public class GameCharacter extends Pane {
     public void moveY(){
         setTranslateY(y);
         if(isFalling){
-            yVelocity = yVelocity>= yMaxVelocity? yMaxVelocity : yVelocity+yAcceleration;
-            y = y + yVelocity;
+            yVelocity = yVelocity >= yMaxVelocity ? yMaxVelocity : yVelocity + yAcceleration;
+            y = y + yVelocity + gravity;
         } else if (isJumping) {
-            yVelocity = yVelocity <= 0? 0 : yVelocity-yAcceleration;
-            y = y - yVelocity;
+            yVelocity = yVelocity <= 0 ? 0 : yVelocity - yAcceleration;
+            y = y - yVelocity - gravity;
         }
     }
     public void moveX(){
         setTranslateX(x);
         if (isMoveRight){
-            xVelocity = xVelocity>=xMaxVelocity? xMaxVelocity : xVelocity+xAcceleration;
-            x = x+xVelocity;
+            xVelocity = xVelocity >= xMaxVelocity ? xMaxVelocity : xVelocity + xAcceleration;
+            x = x + xVelocity + speed;
         }
         if (isMoveLeft){
-            xVelocity = xVelocity>=xMaxVelocity? xMaxVelocity : xVelocity+xAcceleration;
-            x = x- xVelocity;
+            xVelocity = xVelocity >= xMaxVelocity ? xMaxVelocity : xVelocity + xAcceleration;
+            x = x - xVelocity - speed;
         }
     }
     public void checkReachGameWall(){
         if(x <= 0){
             x=0;
-        } else if (x+getHeight() >= GameStage.WIDTH) {
+        } else if (x+getWidth() >= GameStage.WIDTH) {
             x = GameStage.WIDTH-(int)getWidth();
         }
     }

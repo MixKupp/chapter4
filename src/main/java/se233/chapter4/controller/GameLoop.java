@@ -14,10 +14,14 @@ public class GameLoop implements Runnable {
         interval = 1000.0f/frameRate;
         running = true;
     }
-    private void update(GameCharacter gameCharacter) {
+    private void update(GameCharacter gameCharacter,GameCharacter gameCharacter2) {
         boolean leftPressed = gameStage.getKeys().isPressed(gameCharacter.getLeftKey());
         boolean rightPressed = gameStage.getKeys().isPressed(gameCharacter.getRightKey());
         boolean upPressed = gameStage.getKeys().isPressed(gameCharacter.getUpKey());
+
+        boolean leftPressed2 = gameStage.getKeys().isPressed(gameCharacter2.getLeftKey());
+        boolean rightPressed2 = gameStage.getKeys().isPressed(gameCharacter2.getRightKey());
+        boolean upPressed2 = gameStage.getKeys().isPressed(gameCharacter2.getUpKey());
         if(leftPressed && rightPressed){
             gameCharacter.stop();
         } else if (leftPressed) {
@@ -34,13 +38,31 @@ public class GameLoop implements Runnable {
         if (upPressed){
             gameCharacter.jump();
         }
+
+        if(leftPressed2 && rightPressed2){
+            gameCharacter2.stop();
+            gameCharacter2.stop();
+        } else if (leftPressed2) {
+            gameCharacter2.getImageView().tick();
+            gameCharacter2.moveLeft();
+            gameStage.getNextGameCharacter().trace();
+        } else if (rightPressed2) {
+            gameCharacter2.getImageView().tick();
+            gameCharacter2.moveRight();
+            gameStage.getNextGameCharacter().trace();
+        }else {
+            gameCharacter2.stop();
+        }
+        if (upPressed2){
+            gameCharacter2.jump();
+        }
     }
 
     @Override
     public void run() {
         while (running) {
             float time = System.currentTimeMillis();
-            update(gameStage.getGameCharacter());
+            update(gameStage.getGameCharacter(),gameStage.getNextGameCharacter());
             time = System.currentTimeMillis() - time;
             if (time < interval) {
                 try {
