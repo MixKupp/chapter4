@@ -83,8 +83,10 @@ public class GameCharacter extends Pane {
     public void checkReachGameWall(){
         if(x <= 0){
             x=0;
+            logger.info("GAME WALL REACHED");
         } else if (x+getWidth() >= GameStage.WIDTH) {
             x = GameStage.WIDTH-(int)getWidth();
+            logger.info("GAME WALL REACHED");
         }
     }
     public void jump(){
