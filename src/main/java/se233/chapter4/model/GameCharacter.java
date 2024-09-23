@@ -15,6 +15,8 @@ public class GameCharacter extends Pane {
     private int CHARACTER_HEIGHT;
     private int x;
     private int y;
+    private int startX;
+    private int startY;
     private int speed,gravity;
     private KeyCode leftKey;
     private KeyCode rightKey;
